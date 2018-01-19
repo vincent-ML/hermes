@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hermesReport" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="77a41187-1a1c-40ff-91a2-745391745360">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="initialDate" class="java.lang.String"/>
+	<parameter name="finalDate" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT F.documentID, D.documentType,I.initial_date, F.final_date,{fn TIMESTAMPDIFF(SQL_TSI_HOUR, I.initial_date,F.final_date)} AS TS_DIFF
+FROM (SELECT documentID, MAX (stateDatetime) AS final_date FROM state WHERE statusID = 'S009' GROUP BY documentID) AS F
+LEFT JOIN (SELECT documentID, MIN (stateDatetime) AS initial_date FROM state WHERE statusID = 'S000' GROUP BY documentID) AS I
+ON F.documentID = I.documentID JOIN document AS D ON F.documentID = D.documentID WHERE DATE(F.final_date) BETWEEN $P{initialDate} AND $P{finalDate}]]>
+	</queryString>
+	<field name="DOCUMENTID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DOCUMENTTYPE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="INITIAL_DATE" class="java.sql.Timestamp"/>
+	<field name="FINAL_DATE" class="java.sql.Timestamp"/>
+	<field name="TS_DIFF" class="java.lang.Long"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="-21" width="596" height="93" backcolor="#54902D" uuid="faa22a7f-0c0c-4ec4-b54a-245b3f43af9e"/>
+				<staticText>
+					<reportElement x="135" y="22" width="345" height="43" forecolor="#FFFFFF" uuid="6711bced-8fa2-4c19-aaed-eacca560cf63"/>
+					<textElement textAlignment="Left">
+						<font size="28" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Hermes Tracking System]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="113" y="64" width="225" height="20" forecolor="#FFFFFF" uuid="4642def6-f691-425f-abb9-a10dcb5e804a"/>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Documents delivered between]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="319" y="64" width="100" height="20" forecolor="#FFFFFF" uuid="64680b9b-ed65-42e1-ae5f-50defbc1b4dd"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{initialDate}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="394" y="64" width="29" height="20" forecolor="#FFFFFF" uuid="fea5ede1-abb0-45a1-84e8-d0622720b526"/>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[and]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="427" y="64" width="100" height="20" forecolor="#FFFFFF" uuid="f9d503ef-4a67-4000-9636-a18d9c1a41cc"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{finalDate}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="dcae9b2e-a74d-4cf4-b331-1a53ef124dc7"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="98" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="9e8fd946-229d-40e6-8e7d-a9a67dc79653"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Document ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="98" y="0" width="111" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="83985c18-75e7-4e79-a1b1-bdb89b4b6152"/>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Document Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="208" y="0" width="127" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="42826d8c-8fc7-4dc0-8658-4f25a8cec5a6"/>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Creation Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="330" y="0" width="122" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="7f590399-2e2f-4b84-931c-9d9b332911ce"/>
+				<textElement textAlignment="Left">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date Delivered]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="437" y="0" width="118" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="026d4a1b-b68e-4927-8440-7d22a58460ac"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Delivery Time (h)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="19" width="555" height="1" uuid="32ad47b4-4700-450c-928c-0e4163eae23e"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="98" height="20" uuid="12a080a1-54e1-40d1-b8ea-44eb33d6bd9e"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DOCUMENTID}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="97" y="0" width="111" height="20" uuid="f30c2f8d-fbbd-47a9-b839-7215989c8506"/>
+				<textElement textAlignment="Left">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DOCUMENTTYPE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="207" y="0" width="128" height="20" uuid="1305c6e6-e206-4d2a-ab02-a3bc8d482ee4"/>
+				<textElement textAlignment="Left">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{INITIAL_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="330" y="0" width="123" height="20" uuid="ed1d343a-832d-4ae2-bfee-5285518da655"/>
+				<textElement textAlignment="Left">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FINAL_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="437" y="0" width="118" height="20" uuid="e0889846-7a9e-4f0f-8626-2fc729ea06fc"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TS_DIFF}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="394a1a54-32b0-4a2f-9be8-dadb54674779"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="5679a955-68c5-44cb-ac3e-251243e2dc08"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13" uuid="d01add70-a775-4d52-9502-46a5bd8a3c97"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
